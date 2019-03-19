@@ -8,7 +8,10 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
     />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700"
+      rel="stylesheet"
+    />
     <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -17,20 +20,25 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-      var newPrefReff;
+      
       $(document).ready(function() {
         firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) {
-          window.location = "index.html";
-        } else {
-          globalUser = user;
-          console.log("global user: " + globalUser);
-          newsPrefReff = database.ref(
-            "/users/" + globalUser.uid + "/newsPreferences/"
-          );
-          console.log("----->" + newsPrefReff);
-        }
-      });
+          if (!user) {
+            console.log("there is no user");
+            debugger;
+            window.location = "index.html";
+            
+            
+          } else {
+            globalUser = user;
+            console.log(globalUser.uid);
+            console.log("global user: " + globalUser.displayName);
+            newsPrefReff = database.ref(
+              "/users/" + globalUser.uid + "/newsPreferences/"
+            );
+            console.log("----->" + newsPrefReff);
+          }
+        });
         function renderButtons() {
           // Deleting the choice buttons prior to adding new choice buttons
           // (this is necessary otherwise we will have repeat buttons)
@@ -74,9 +82,15 @@
         // When the user clicks a news preference button the preference is added to firebase
         $(document).on("click", ".newsPreference", function(event) {
           event.preventDefault();
+          // Setting newsPrefReff to null empties the contents of newsPreferences in firebase for that user.
+          newsPrefReff.set("null");
+
           var choice = $(this).attr("data-val");
           newsPrefReff.push(choice);
           console.log("You clicked a button" + choice);
+          console.log(newsPrefReff+'.val()');
+          debugger;
+          Redirect('index.html');
         });
       });
     </script>
@@ -90,7 +104,7 @@
         width: 100%;
       }
     </style>
-
+<!----------------------- NAV BAR ----------------------->
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -109,7 +123,6 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="preferences.html">Preferences</a></li>
 
             <li><a id="signOutButton">Sign Out</a></li>
           </ul>
@@ -124,21 +137,9 @@
         </div>
       </div>
     </nav>
-
+<!----------------------- PREFERENCES CONTAINER ----------------------->
     <div class="container text-center">
       <div class="row">
-        <div class="col-sm-2 well">
-          <div class="well">
-            <p><a href="#">My Profile</a></p>
-            <img
-              src="bird.jpg"
-              class="img-circle"
-              height="65"
-              width="65"
-              alt="Avatar"
-            />
-          </div>
-        </div>
         <div class="col-sm-7">
           <div class="row">
             <div class="col-sm-6">
@@ -159,94 +160,12 @@
                 </form>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="well"></div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bandmember.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bandmember.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <footer class="container-fluid text-center">
-      <p>CopyRights 2019</p>
-    </footer>
+<!------------------------- FOOTER ------------------------------------->
+    <footer class="container-fluid text-center"></footer>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>

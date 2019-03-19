@@ -8,13 +8,8 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
     />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700"
-      rel="stylesheet"
-    />
     <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
@@ -26,13 +21,13 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-      /// to do list ///////////////////////////////
       $(document).ready(function() {
+        /// to do list ///////////////////////////////
         $("ul").on("click", "li", function markAsChecked() {
           $(this).toggleClass("completed");
         });
 
-        //click on x to delete todo
+        //click on trash icon to delete todo
         $("#todoUl").on("click", "#todoSpan", function deleteTodo(event) {
           //fades the li for 500 miliseconds and then removes if completely
           console.log(todoItemRef);
@@ -40,11 +35,15 @@
             .parent()
             .fadeOut(500, function() {
               $(this).remove();
+              
             });
           todoItemRef.remove();
           for (var i = 0; i < todoItemRef.length; i++) event.stopPropagation(); //stops bubbling up to other elements
         });
-        var todoItemRef;
+        
+
+        
+
         $('input[type="text"]').keypress(function(event) {
           if (event.which === 13) {
             var todoStr = $(this).val();
@@ -73,7 +72,7 @@
         var queryUrl =
           "https://api.openweathermap.org/data/2.5/weather?zip=" +
           zipCode +
-          ",us&appid=" +
+          ",us&units=imperial&appid=" +
           apiKey;
         //////WEATHER API CALL////////
         $.ajax({
@@ -81,17 +80,19 @@
           method: "GET"
         }).then(function(response) {
           console.log(response);
-          console.log(response.name)
+          console.log(response.name);
 
-          var a = $("<h2>");
+          var a = $("<h1>");
           $(a).append("City: " + response.name);
           $("#city").append(a);
-          $("#weatherDescription").append("Weather Description: " + response.weather[0].description);
+          $("#weatherDescription").append(
+            "Weather Description: " + response.weather[0].description
+          );
           $("#windSpeed").append("Wind Speed: " + response.wind.speed + "mph");
-          $("#humidity").append("Humidity: " + response.main.humidity);
-          $("#currentTemp").append("Temperature: " + response.main.temp);
-          $("#high").append("High of the day: " + response.main.temp_max);
-          $("#low").append("Low of the day: " + response.main.temp_min);
+          $("#humidity").append("Humidity: " + response.main.humidity.toFixed(0));
+          $("#currentTemp").append("Temperature: " + response.main.temp.toFixed(0) + '° F');
+          $("#high").append("High of the day: " + response.main.temp_max.toFixed(0) + '° F');
+          $("#low").append("Low of the day: " + response.main.temp_min.toFixed(0) + '° F');
         });
       }
 
@@ -124,14 +125,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">MyApp</a>
+          <a class="navbar-brand" href="index.html">MySnapShot</a>
+          <span
+            style="font-size: 2.3em; color: rgb(255, 255, 255); margin-right: 10px;"
+          >
+            <i class="fas fa-globe fa-1x"></i>
+          </span>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="preferences.html">Preferences</a></li>
-            <li><a href="login.html">Sign In</a></li>
-            <li><a id="signOutButton">Sign Out</a></li>
+            <li>
+              <a href="preferences.html" id="preferencesId">Preferences</a>
+            </li>
+            <li><a href="login.html" id="loginId">Sign In</a></li>
+            <li><a id="signOutButton" id="signOutButton">Sign Out</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
@@ -151,8 +159,9 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="well">
-                <p>News Api stuff goes here</p>
-                
+                <h1>NEWS</h1>
+                <hr />
+                <div class="news"></div>
               </div>
             </div>
             <div class="col-sm-6">
@@ -169,7 +178,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" id="todoApp">
             <div class="col-sm-6">
               <div class="well">
                 <div id="todoContainer">
@@ -183,70 +192,6 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bandmember.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <p>app go here</p>
-                <img
-                  src="bird.jpg"
-                  class="img-circle"
-                  height="55"
-                  width="55"
-                  alt="Avatar"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -255,5 +200,6 @@
     <footer class="container-fluid text-center">
       <p>CopyRights 2019</p>
     </footer>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
