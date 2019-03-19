@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Preferences</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+      var newPrefReff;
+      $(document).ready(function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          window.location = "index.html";
+        } else {
+          globalUser = user;
+          console.log("global user: " + globalUser);
+          newsPrefReff = database.ref(
+            "/users/" + globalUser.uid + "/newsPreferences/"
+          );
+          console.log("----->" + newsPrefReff);
+        }
+      });
+        function renderButtons() {
+          // Deleting the choice buttons prior to adding new choice buttons
+          // (this is necessary otherwise we will have repeat buttons)
+          $("#buttons-view").empty();
+
+          // Looping through the array of choices
+          for (var i = 0; i < newsPref.length; i++) {
+            // Then dynamicaly generating buttons for each choice in the array.
+            // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
+            var a = $("<button></button>");
+            // Adding a class
+            a.addClass("newsPreference");
+            // Adding a data-attribute with a value of the choice at index i
+            a.attr("data-val", newsPref[i]);
+            // Adding the id of newsChoice to every news button
+            a.attr("id", "newsChoice");
+            // Providing the button's text with a value of the choice at index i
+            a.text(newsPref[i]);
+            // Adding the button to the HTML
+            console.log(newsPref[i]);
+            $("#buttons-view").append(a);
+          }
+          console.log(newsPref);
+        }
+        renderButtons();
+
+        // adds new user created news buttons to the page
+        $("#addNewsButton").on("click", function(event) {
+          // This line will grab the text from the input box
+          event.preventDefault();
+          var newChoice = $("#news-input")
+            .val()
+            .trim();
+          // The choice from the textbox is then added to our newsPref array
+          newsPref.push(newChoice);
+
+          // calling renderButtons handles the processing of our newsPref array
+          renderButtons();
+        });
+
+        // When the user clicks a news preference button the preference is added to firebase
+        $(document).on("click", ".newsPreference", function(event) {
+          event.preventDefault();
+          var choice = $(this).attr("data-val");
+          newsPrefReff.push(choice);
+          console.log("You clicked a button" + choice);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <style>
+      body {
+        background: url(assets/image/dan-gold-1232227-unsplash1.png);
+        background-size: 100%;
+        background-repeat: repeat;
+        width: 100%;
+      }
+    </style>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#myNavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">MyApp</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="preferences.html">Preferences</a></li>
+
+            <li><a id="signOutButton">Sign Out</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#"
+                ><span class="glyphicon glyphicon-user"></span> My Account</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-sm-2 well">
+          <div class="well">
+            <p><a href="#">My Profile</a></p>
+            <img
+              src="bird.jpg"
+              class="img-circle"
+              height="65"
+              width="65"
+              alt="Avatar"
+            />
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="well">
+                <div id="buttons-view"></div>
+                <form id="news-form">
+                  <label for="news-input"
+                    >What type of new would you like to recieve?</label
+                  >
+                  <input
+                    type="text"
+                    id="news-input"
+                    placeholder="Enter News Preference Here..."
+                  /><br />
+
+                  <!-- Button triggers new choice to be added -->
+                  <input id="addNewsButton" type="submit" value="Submit" />
+                </form>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="well"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bandmember.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bird.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bandmember.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bird.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bird.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="well">
+                <p>app go here</p>
+                <img
+                  src="bird.jpg"
+                  class="img-circle"
+                  height="55"
+                  width="55"
+                  alt="Avatar"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="container-fluid text-center">
+      <p>CopyRights 2019</p>
+    </footer>
+  </body>
+</html>

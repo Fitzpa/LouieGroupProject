@@ -1,0 +1,107 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.well {
+    background-color: rgb(52, 52, 52);
+    /*opacity: .9;*/
+    
+}
+p{
+    color: white;
+    
+}
+footer {
+    background-color: #555;
+    color: white;
+    padding: 16px;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    
+
+}
+.form-check-lable{
+    color: white;
+}
+#news-input {
+    width: 100%;
+}
+/*---------------todo list styling------------------*/
+#todoTitle {
+    background: #2980b9;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: normal;
+}
+#todoUl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#todoLi {
+    background: #ffffff;
+    height: 40px;
+    line-height: 40px;
+    color: #666;
+    font-size: 16px;
+    width: 100%;
+}
+#todoSpan {
+    background: #e74c3c;
+    color: #fff;
+    height: 40px;
+    margin-right: 20px;
+    text-align: center;
+    display: inline-block;
+    width: 0;
+    transition: 0.2s;
+    opacity: 0;
+}
+#todoInput {
+    font-size: 18px;
+    color: #2980b9;
+    background: #f7f7f7;
+    width: 100%;
+    padding: 13px 13px 13px 20px;
+    box-sizing: border-box;
+    border: 3px solid rbga(0, 0, 0, 0);
+}
+#todoContainer {
+    width: 360px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    margin: 100px auto;
+    background: #f7f7f7;
+}
+.fa-plus {
+    float: right;
+}
+.fa-plus:hover {
+    color: #555;
+    transition: 0.2s ease-in
+}
+.completed {
+    color: #808080;
+    text-decoration: line-through;
+}
+
+#todoLi:nth-child(2n) {
+    background: #f7f7f7;
+}
+
+#todoLi:hover span {
+    width: 40px;
+    opacity: 1;
+}
+
+#todoInput:focus {
+    background: #fff;
+    border: 3px solid #2980b9;
+    outline: none;
+}
+/*------------------------------------------------------*/
