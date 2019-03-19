@@ -1,0 +1,38 @@
+.form-group {
+    align-content: center;
+}
+.container {
+    background-color: black;
+    max-width: 75%;
+    border-radius: 35px;
+}
+.display-4 {
+    color: whitesmoke;
+    text-align: center;
+}
+
+
+.well {
+    background-color: rgb(52, 52, 52);
+    /*opacity: .9;*/
+    
+}
+p{
+    color: white;
+    
+}
+footer {
+    background-color: #555;
+    color: white;
+    padding: 16px;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    
+
+}
+.form-check-lable{
+    color: white;
+}
