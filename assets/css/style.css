@@ -132,3 +132,12 @@ h2 {
     color: rgba(0, 0, 0, 0);
     text-shadow: #fff;
 }
+
+.stock {
+    color: #fff;
+}
+
+.icon {
+    height: 120px;
+    width: auto;
+}

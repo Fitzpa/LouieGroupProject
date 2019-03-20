@@ -15,7 +15,7 @@ var userPref;
 var news;
 var todoLength;
 var todoItem;
-var todoArray;
+var newsItem;
 
 // if there is a user signed in the global variable 'globalUser' is equal to the user
 // this keeps the user authorization active on all pages
@@ -39,38 +39,55 @@ firebase.auth().onAuthStateChanged(function(user) {
     newsPrefReff.on("value", function(snapshot) {
       console.log("------------------------------");
       console.log(snapshot.val());
-      
+      var newsObj = snapshot.val();
+      var preferenceId = Object.keys(newsObj)[0];
+      newsItem = newsObj[preferenceId];
+      console.log("Here is the news preference " + newsItem);
+
+      var newsUrl = newsQueryURL();
+      // Ajax call to get news from NYT
+      $.ajax({
+        url: newsUrl,
+        method: "GET"
+      }).then(displayNews);
+
+      getStock();
     });
 
+
     todoItemRef.on("value", function(snapshot) {
+      var todos = snapshot.val();
+      if (!todos) {
+        return console.log("no todos");
+      }
+      var todosArr = Object.keys(todos).map(function mapCallback(key) {
+        return {
+          id: key,
+          item: todos[key]
+        };
+      });
+      $("#todoUl").empty();
+      //todoItemRef.child(todoArr[0].id).set(null);
+      for (var i = 0; i < todosArr.length; i++) {
+        console.log("+++++++");
+        console.log(todosArr[i].id);
+        console.log(todosArr[i].item);
+
+        $("#todoUl").append(
+          "<li class='todoLi'><span data-todo-id='" +
+            todosArr[i].id +
+            "' class='todoSpan'><i class='fas fa-trash'></i> </span>" +
+            todosArr[i].item +
+            "</li>"
+        );
+      }
+
+      console.log("todos", todosArr);
+
       console.log(snapshot.numChildren());
       todoLength = snapshot.numChildren();
 
       console.log("todoItems: " + todoLength);
-      if (!todoLength === 0) {
-        todoItemkeys = database
-          .ref("/users/" + globalUser.uid + "/todoItems/")
-          .orderByKey();
-        var i = 0;
-        todoItemRef.on("value", function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-            var key = childSnapshot.key;
-            var childData = childSnapshot.val();
-            console.log("+++++++");
-            console.log(key);
-            console.log(childData);
-            todoArray[i].push(childData);
-            $("#todoUl").append(
-              "<li id='todoLi'><span id='todoSpan'><i class='fas fa-trash'></i> </span>" +
-                childData +
-                "</li>"
-            );
-            i++;
-          });
-        });
-      } else {
-        console.log("there are no todo items");
-      }
     });
   } else {
     $("#loginId").show();
@@ -141,12 +158,6 @@ $.getJSON("https://api.ipify.org?format=json", function(data) {
 });
 
 /////////////////////////////////NEWS////////////////////////////////////
-var newsUrl = newsQueryURL();
-// Ajax call to get news from NYT
-$.ajax({
-  url: newsUrl,
-  method: "GET"
-}).then(displayNews);
 
 //getWeather();
 
@@ -164,9 +175,9 @@ function newsQueryURL() {
   // Grab user preferences from DB is user registered
   //
   // Set user parameters for query
-  
-  if (news === 0) {
-    queryParams.q = news;
+  console.log("SA;LJFDS;LHJDSAF;LJFD;LKJFDS;LKJFDS;LKJFDS;L", newsItem);
+  if (newsItem) {
+    queryParams.q = newsItem;
   } else {
     queryParams.q = "technology";
   }
@@ -208,6 +219,29 @@ function displayNews(newsData) {
   }
   // Add div element to the DOM
   $(".news").append($news);
+}
+
+function getStock() {
+  var stock_symbol = "MSFT";
+  var stock_key = "U2N74FL8BJ4X60YC";
+  var stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stock_symbol + "&apikey=" + stock_key + "&JSONP=displayStock"
+  $.ajax({
+      url: stock_url,
+      method: "GET"
+  }).then(displayStock);
+}
+function displayStock(data) {
+  //console.log("STOCK ->", data);
+  var symbol = data['Global Quote']['01. symbol'];
+  
+  console.log("SYMBOL ->",symbol);
+  var open = data['Global Quote']['02. open'];
+  var high = data['Global Quote']['03. high'];
+  var low = data['Global Quote']['04. low'];
+  var price = data['Global Quote']['05. price'];
+  
+  $('.symbol').text(symbol);
+  $('.price').text(price);
 }
 
 // function getWeather() {

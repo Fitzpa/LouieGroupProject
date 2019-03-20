@@ -28,31 +28,27 @@
         });
 
         //click on trash icon to delete todo
-        $("#todoUl").on("click", "#todoSpan", function deleteTodo(event) {
+        $(document).on("click", ".todoSpan", function deleteTodo(event) {
           //fades the li for 500 miliseconds and then removes if completely
-          console.log(todoItemRef);
+          console.log("i got clicked", $(this));
+
+          var id = $(this).attr("data-todo-id");
+          console.log("removing this id " + id);
+
+          todoItemRef.child(id).set(null);
+
           $(this)
             .parent()
             .fadeOut(500, function() {
               $(this).remove();
-              
             });
-          todoItemRef.remove();
-          for (var i = 0; i < todoItemRef.length; i++) event.stopPropagation(); //stops bubbling up to other elements
         });
-        
-
-        
 
         $('input[type="text"]').keypress(function(event) {
           if (event.which === 13) {
             var todoStr = $(this).val();
             $(this).val("");
-            $("#todoUl").append(
-              "<li id='todoLi'><span id='todoSpan'><i class='fas fa-trash'></i> </span>" +
-                todoStr +
-                "</li>"
-            );
+            $(".todoUl").append("<li class='todoLi'>" + todoStr + "</li>");
             todoItemRef = database.ref(
               "/users/" + globalUser.uid + "/todoItems/"
             );
@@ -74,6 +70,7 @@
           zipCode +
           ",us&units=imperial&appid=" +
           apiKey;
+          
         //////WEATHER API CALL////////
         $.ajax({
           url: queryUrl,
@@ -81,6 +78,9 @@
         }).then(function(response) {
           console.log(response);
           console.log(response.name);
+          var icon = response.weather[0].icon;
+          var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png"
+          var iconImg = $('<img class="icon" src="' + iconUrl + '">')
 
           var a = $("<h1>");
           $(a).append("City: " + response.name);
@@ -88,11 +88,22 @@
           $("#weatherDescription").append(
             "Weather Description: " + response.weather[0].description
           );
+          $("#weatherDescription").append(
+            iconImg
+          );
           $("#windSpeed").append("Wind Speed: " + response.wind.speed + "mph");
-          $("#humidity").append("Humidity: " + response.main.humidity.toFixed(0));
-          $("#currentTemp").append("Temperature: " + response.main.temp.toFixed(0) + '° F');
-          $("#high").append("High of the day: " + response.main.temp_max.toFixed(0) + '° F');
-          $("#low").append("Low of the day: " + response.main.temp_min.toFixed(0) + '° F');
+          $("#humidity").append(
+            "Humidity: " + response.main.humidity.toFixed(0)
+          );
+          $("#currentTemp").append(
+            "Temperature: " + response.main.temp.toFixed(0) + "° F"
+          );
+          $("#high").append(
+            "High of the day: " + response.main.temp_max.toFixed(0) + "° F"
+          );
+          $("#low").append(
+            "Low of the day: " + response.main.temp_min.toFixed(0) + "° F"
+          );
         });
       }
 
@@ -169,11 +180,27 @@
                 <div id="weather">
                   <p id="city"></p>
                   <p id="weatherDescription"></p>
+                  
                   <p id="windSpeed"></p>
                   <p id="humidity"></p>
                   <p id="currentTemp"></p>
                   <p id="high"></p>
                   <p id="low"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="well">
+              <h1>STOCK</h1>
+              <hr />
+              <div class="stock">
+                <div class="current">
+                  <div class="info">
+                    <div>&nbsp;</div>
+                    <div class="symbol"></div>
+                    <div class="price">&deg;</div>
+                  </div>
                 </div>
               </div>
             </div>
