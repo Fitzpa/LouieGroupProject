@@ -33,7 +33,7 @@
           //fades the li for 500 miliseconds and then removes if completely
           console.log("i got clicked", $(this));
 
-          var id = $(this).attr("data-todo-id");
+          var id = $(this).attr("data-id");
           console.log("removing this id " + id);
 
           todoItemRef.child(id).set(null);
@@ -71,7 +71,7 @@
           zipCode +
           ",us&units=imperial&appid=" +
           apiKey;
-          
+
         //////WEATHER API CALL////////
         $.ajax({
           url: queryUrl,
@@ -80,8 +80,8 @@
           console.log(response);
           console.log(response.name);
           var icon = response.weather[0].icon;
-          var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png"
-          var iconImg = $('<img class="icon" src="' + iconUrl + '">')
+          var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
+          var iconImg = $('<img class="icon" src="' + iconUrl + '">');
 
           var a = $("<h1>");
           $(a).append("City: " + response.name);
@@ -89,9 +89,7 @@
           $("#weatherDescription").append(
             "Weather Description: " + response.weather[0].description
           );
-          $("#weatherDescription").append(
-            iconImg
-          );
+          $("#weatherDescription").append(iconImg);
           $("#windSpeed").append("Wind Speed: " + response.wind.speed + "mph");
           $("#humidity").append(
             "Humidity: " + response.main.humidity.toFixed(0)
@@ -115,7 +113,7 @@
       });
     </script>
   </head>
-  <body>
+  <body class="d-flex flex-column">
     <style>
       body {
         background: url(assets/image/dan-gold-1232227-unsplash1.png);
@@ -167,67 +165,71 @@
 
     <div class="container text-center">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <h1>NEWS</h1>
-                <hr />
-                <div class="news"></div>
-              </div>
+        <div class="col-sm-6">
+          <div class="well">
+            <h1>NEWS</h1>
+            <hr />
+            <div class="news"></div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="well">
+            <div id="weather">
+              <p id="city"></p>
+              <p id="weatherDescription"></p>
+
+              <p id="windSpeed"></p>
+              <p id="humidity"></p>
+              <p id="currentTemp"></p>
+              <p id="high"></p>
+              <p id="low"></p>
             </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <div id="weather">
-                  <p id="city"></p>
-                  <p id="weatherDescription"></p>
-                  
-                  <p id="windSpeed"></p>
-                  <p id="humidity"></p>
-                  <p id="currentTemp"></p>
-                  <p id="high"></p>
-                  <p id="low"></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="well">
+            <h1>STOCK</h1>
+            <hr />
+            <div class="stock">
+              <div class="current">
+                <div class="info">
+                  <div>&nbsp;</div>
+                  <div class="symbol"></div>
+                  <div class="price">&deg;</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
-            <div class="well">
-              <h1>STOCK</h1>
-              <hr />
-              <div class="stock">
-                <div class="current">
-                  <div class="info">
-                    <div>&nbsp;</div>
-                    <div class="symbol"></div>
-                    <div class="price">&deg;</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" id="todoApp">
-            <div class="col-sm-6">
-              <div class="well">
-                <div id="todoContainer">
-                  <h1 id="todoTitle">To-Do List <i class="fas fa-plus"></i></h1>
-                  <input
-                    type="text"
-                    placeholder="Add New to-do"
-                    id="todoInput"
-                  />
-                  <ul id="todoUl"></ul>
-                </div>
-              </div>
+        </div>
+
+        <div class="col-sm-6" id="todoApp">
+          <div class="well">
+            <div id="todoContainer">
+              <h1 id="todoTitle">To-Do List <i class="fas fa-plus"></i></h1>
+              <input type="text" placeholder="Add New to-do" id="todoInput" />
+              <ul id="todoUl"></ul>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <footer class="container-fluid text-center">
+    <!-- <footer class="container-fluid text-center">
       <p>CopyRights 2019</p>
+    </footer> -->
+
+    <!-- Footer -->
+    <footer class="page-footer font-small blue">
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">
+        © 2019 Copyright:
+      </div>
+      <!-- Copyright -->
     </footer>
+    <!-- Footer -->
+
     <script src="assets/js/main.js"></script>
   </body>
 </html>

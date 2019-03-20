@@ -1,5 +1,9 @@
 * {
     font-family: 'Roboto', sans-serif;
+    
+}
+body {
+    min-height: calc(100vh - 60px);
 }
 
 .well {
@@ -16,10 +20,10 @@ footer {
     background-color: #555;
     color: white;
     padding: 16px;
+    height: 60px;
     bottom: 0;
     text-align: center;
     width: 100%;
-    position: fixed;
     left: 0;
 }
 
@@ -48,13 +52,13 @@ footer {
     font-weight: normal;
 }
 
-#todoUl {
+.todoUl {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-#todoLi {
+.todoLi {
     background: #ffffff;
     height: 40px;
     line-height: 40px;
@@ -63,7 +67,7 @@ footer {
     width: 100%;
 }
 
-#todoSpan {
+.todoSpan {
     background: #e74c3c;
     color: #fff;
     height: 40px;
@@ -86,9 +90,9 @@ footer {
 }
 
 #todoContainer {
-    width: 360px;
+    width: 100%;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    margin: 100px auto;
+    margin: auto;
     background: #f7f7f7;
 }
 
@@ -106,16 +110,16 @@ footer {
     text-decoration: line-through;
 }
 
-#todoLi:nth-child(2n) {
+.todoLi:nth-child(2n) {
     background: #f7f7f7;
 }
 
-#todoLi:hover span {
+.todoLi:hover span {
     width: 40px;
     opacity: 1;
 }
 
-#todoInput:focus {
+.todoInput:focus {
     background: #fff;
     border: 3px solid #2980b9;
     outline: none;

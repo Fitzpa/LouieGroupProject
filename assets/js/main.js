@@ -1,5 +1,3 @@
-
-
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyCMJ01rD9Ucqh2KEUE79yEpPMNvanTFGZg",
@@ -18,12 +16,11 @@ var news;
 var todoLength;
 var todoItem;
 var newsItem;
-
+var todosArrKeys;
 // if there is a user signed in the global variable 'globalUser' is equal to the user
 // this keeps the user authorization active on all pages
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log("hello");
     globalUser = user;
     $("#loginId").hide();
     $("#preferenceId").show();
@@ -40,7 +37,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     newsPrefReff.on("value", function(snapshot) {
       console.log("------------------------------");
-      console.log(snapshot.val());
+
       var newsObj = snapshot.val();
       var preferenceId = Object.keys(newsObj)[0];
       newsItem = newsObj[preferenceId];
@@ -56,39 +53,63 @@ firebase.auth().onAuthStateChanged(function(user) {
       getStock();
     });
 
-
     todoItemRef.on("value", function(snapshot) {
       var todos = snapshot.val();
       if (!todos) {
         return console.log("no todos");
       }
+
+      /////////////////LODASH///////////////////////////////////////
+      // CREATES AN ARRAY OF KEYS FROM THE TODOS OBJ USING LODASH
+      var a = _.keys(todos);
+      console.log(a[0]);
+      // CREATES AN ARRAY OF VALUES FROM THE TODOS OBJ USING LODASH
+      var b = _.toArray(todos);
+
       var todosArr = Object.keys(todos).map(function mapCallback(key) {
         return {
           id: key,
           item: todos[key]
         };
       });
-/////////////////LODASH///////////////////////////////////////
-      var todosArrLodash = _.toArray(todos);
+      
+
+      console.log("lodash here: " + b);
+      //////////////////////////////////////////////////////////////
+      $("#todoUl").empty();
 
       
-      console.log("lodash here: "+todosArrLodash);
-//////////////////////////////////////////////////////////////
-      $("#todoUl").empty();
-      //todoItemRef.child(todoArr[0].id).set(null);
-      for (var i = 0; i < todosArr.length; i++) {
+      for (var i = 0; i < b.length; i++) {
         console.log("+++++++");
-        console.log(todosArr[i].id);
-        console.log(todosArr[i].item);
+        console.log(b[i]);
+        console.log(a[i]);
+        console.log("array item: " + b[i]);
 
         $("#todoUl").append(
-          "<li class='todoLi'><span data-todo-id='" +
-            todosArr[i].id +
-            "' class='todoSpan'><i class='fas fa-trash'></i> </span>" +
-            todosArr[i].item +
+          "<li class='todoLi'><span class='todoSpan' data-id='" +
+            a[i] +
+            "'><i class='fas fa-trash'></i> </span>" +
+            b[i] +
             "</li>"
         );
       }
+
+      /// JAVASCRIPT VERSION OF THE ABOVE LODASH CODE
+      // $("#todoUl").empty();
+      // //todoItemRef.child(todoArr[0].id).set(null);
+      // for (var i = 0; i < todosArr.length; i++) {
+      //   console.log("+++++++");
+      //   console.log("array id: " + todosArr[i].id);
+      //   console.log("array item: " + todosArr[i].item);
+
+      //   $("#todoUl").append(
+      //     "<li class='todoLi'><span data-todo-id='" +
+      //       todosArr[i].id +
+      //       "' class='todoSpan'><i class='fas fa-trash'></i> </span>" +
+      //       todosArr[i].item +
+      //       "</li>"
+      //   );
+      // }
 
       console.log("todos", todosArr);
 
@@ -103,13 +124,13 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#signOutButton").hide();
     $("#todoApp").hide();
     var newsUrl = newsQueryURL();
-      // Ajax call to get news from NYT
-      $.ajax({
-        url: newsUrl,
-        method: "GET"
-      }).then(displayNews);
+    // Ajax call to get news from NYT
+    $.ajax({
+      url: newsUrl,
+      method: "GET"
+    }).then(displayNews);
 
-      getStock();
+    getStock();
   }
 });
 
@@ -203,7 +224,7 @@ function newsQueryURL() {
 
 function displayNews(newsData) {
   var numHeadLines = 3;
-  console.log(newsData);
+
   var divId = 0;
   var div = "";
 
@@ -218,8 +239,6 @@ function displayNews(newsData) {
     var headline = article.headline.print_headline;
     var headLineUrl = article.web_url;
 
-    console.log("head line : ", headline);
-    console.log("head line : ", headline);
     //var byline = article.byline;
     //var section = article.section_name;
     //var pubDate = article.pub_date;
@@ -240,24 +259,29 @@ function displayNews(newsData) {
 function getStock() {
   var stock_symbol = "MSFT";
   var stock_key = "U2N74FL8BJ4X60YC";
-  var stock_url = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stock_symbol + "&apikey=" + stock_key + "&JSONP=displayStock"
+  var stock_url =
+    "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" +
+    stock_symbol +
+    "&apikey=" +
+    stock_key +
+    "&JSONP=displayStock";
   $.ajax({
-      url: stock_url,
-      method: "GET"
+    url: stock_url,
+    method: "GET"
   }).then(displayStock);
 }
 function displayStock(data) {
   //console.log("STOCK ->", data);
-  var symbol = data['Global Quote']['01. symbol'];
-  
-  console.log("SYMBOL ->",symbol);
-  var open = data['Global Quote']['02. open'];
-  var high = data['Global Quote']['03. high'];
-  var low = data['Global Quote']['04. low'];
-  var price = data['Global Quote']['05. price'];
-  
-  $('.symbol').text(symbol);
-  $('.price').text(price);
+  var symbol = data["Global Quote"]["01. symbol"];
+
+  console.log("SYMBOL ->", symbol);
+  var open = data["Global Quote"]["02. open"];
+  var high = data["Global Quote"]["03. high"];
+  var low = data["Global Quote"]["04. low"];
+  var price = data["Global Quote"]["05. price"];
+
+  $(".symbol").text(symbol);
+  $(".price").text(price);
 }
 
 // function getWeather() {
