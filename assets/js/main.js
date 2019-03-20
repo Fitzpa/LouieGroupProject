@@ -1,3 +1,5 @@
+
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyCMJ01rD9Ucqh2KEUE79yEpPMNvanTFGZg",
@@ -66,6 +68,12 @@ firebase.auth().onAuthStateChanged(function(user) {
           item: todos[key]
         };
       });
+/////////////////LODASH///////////////////////////////////////
+      var todosArrLodash = _.toArray(todos);
+
+      
+      console.log("lodash here: "+todosArrLodash);
+//////////////////////////////////////////////////////////////
       $("#todoUl").empty();
       //todoItemRef.child(todoArr[0].id).set(null);
       for (var i = 0; i < todosArr.length; i++) {
