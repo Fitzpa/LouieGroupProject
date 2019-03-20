@@ -94,6 +94,14 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#preferenceId").hide();
     $("#signOutButton").hide();
     $("#todoApp").hide();
+    var newsUrl = newsQueryURL();
+      // Ajax call to get news from NYT
+      $.ajax({
+        url: newsUrl,
+        method: "GET"
+      }).then(displayNews);
+
+      getStock();
   }
 });
 
