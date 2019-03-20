@@ -1,235 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
-    />
-    <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-      crossorigin="anonymous"
-    />
-    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script>
-      $(document).ready(function() {
-        /// to do list ///////////////////////////////
-        $("ul").on("click", "li", function markAsChecked() {
-          $(this).toggleClass("completed");
-        });
 
-        //click on trash icon to delete todo
-        $(document).on("click", ".todoSpan", function deleteTodo(event) {
-          //fades the li for 500 miliseconds and then removes if completely
-          console.log("i got clicked", $(this));
-
-          var id = $(this).attr("data-id");
-          console.log("removing this id " + id);
-
-          todoItemRef.child(id).set(null);
-
-          $(this)
-            .parent()
-            .fadeOut(500, function() {
-              $(this).remove();
-            });
-        });
-
-        $('input[type="text"]').keypress(function(event) {
-          if (event.which === 13) {
-            var todoStr = $(this).val();
-            $(this).val("");
-            $(".todoUl").append("<li class='todoLi'>" + todoStr + "</li>");
-            todoItemRef = database.ref(
-              "/users/" + globalUser.uid + "/todoItems/"
-            );
-            todoItemRef.push(todoStr);
-          }
-        });
-
-        $(".fa-plus").on("click", function() {
-          $('input[type="text"]').fadeToggle();
-        });
+<head>
+  <title>Home</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js"></script>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    $(document).ready(function () {
+      /// to do list ///////////////////////////////
+      $("ul").on("click", "li", function markAsChecked() {
+        $(this).toggleClass("completed");
       });
 
-      function callback(response) {
-        zipCode = response.postal;
-        console.log(zipCode);
-        var apiKey = "de7feaa49dd3569b7c2f43f3880803f5";
-        var queryUrl =
-          "https://api.openweathermap.org/data/2.5/weather?zip=" +
-          zipCode +
-          ",us&units=imperial&appid=" +
-          apiKey;
+      //click on trash icon to delete todo
+      $(document).on("click", ".todoSpan", function deleteTodo(event) {
+        //fades the li for 500 miliseconds and then removes if completely
+        console.log("i got clicked", $(this));
 
-        //////WEATHER API CALL////////
-        $.ajax({
-          url: queryUrl,
-          method: "GET"
-        }).then(function(response) {
-          console.log(response);
-          console.log(response.name);
-          var icon = response.weather[0].icon;
-          var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
-          var iconImg = $('<img class="icon" src="' + iconUrl + '">');
+        var id = $(this).attr("data-id");
+        console.log("removing this id " + id);
 
-          var a = $("<h1>");
-          $(a).append("City: " + response.name);
-          $("#city").append(a);
-          $("#weatherDescription").append(
-            "Weather Description: " + response.weather[0].description
-          );
-          $("#weatherDescription").append(iconImg);
-          $("#windSpeed").append("Wind Speed: " + response.wind.speed + "mph");
-          $("#humidity").append(
-            "Humidity: " + response.main.humidity.toFixed(0)
-          );
-          $("#currentTemp").append(
-            "Temperature: " + response.main.temp.toFixed(0) + "° F"
-          );
-          $("#high").append(
-            "High of the day: " + response.main.temp_max.toFixed(0) + "° F"
-          );
-          $("#low").append(
-            "Low of the day: " + response.main.temp_min.toFixed(0) + "° F"
-          );
-        });
-      }
+        todoItemRef.child(id).set(null);
 
+        $(this)
+          .parent()
+          .fadeOut(500, function () {
+            $(this).remove();
+          });
+      });
+
+      $('input[type="text"]').keypress(function (event) {
+        if (event.which === 13) {
+          var todoStr = $(this).val();
+          $(this).val("");
+          $(".todoUl").append("<li class='todoLi'>" + todoStr + "</li>");
+          todoItemRef = database.ref(
+            "/users/" + globalUser.uid + "/todoItems/"
+          );
+          todoItemRef.push(todoStr);
+        }
+      });
+
+      $(".fa-plus").on("click", function () {
+        $('input[type="text"]').fadeToggle();
+      });
+    });
+
+    function callback(response) {
+      zipCode = response.postal;
+      console.log(zipCode);
+      var apiKey = "de7feaa49dd3569b7c2f43f3880803f5";
+      var queryUrl =
+        "https://api.openweathermap.org/data/2.5/weather?zip=" +
+        zipCode +
+        ",us&units=imperial&appid=" +
+        apiKey;
+
+      //////WEATHER API CALL////////
       $.ajax({
-        method: "GET",
-        url: "https://geoip-db.com/jsonp/",
-        dataType: "jsonp"
+        url: queryUrl,
+        method: "GET"
+      }).then(function (response) {
+        console.log(response);
+        console.log(response.name);
+        var icon = response.weather[0].icon;
+        var iconUrl = "https://openweathermap.org/img/w/" + icon + ".png";
+        var iconImg = $('<img class="icon" src="' + iconUrl + '">');
+
+        var a = $("<h1>");
+        $(a).append("City: " + response.name);
+        $("#city").append(a);
+        $("#weatherDescription").append(
+          "Weather Description: " + response.weather[0].description
+        );
+        $("#weatherDescription").append(iconImg);
+        $("#windSpeed").append("Wind Speed: " + response.wind.speed + "mph");
+        $("#humidity").append(
+          "Humidity: " + response.main.humidity.toFixed(0)
+        );
+        $("#currentTemp").append(
+          "Temperature: " + response.main.temp.toFixed(0) + "° F"
+        );
+        $("#high").append(
+          "High of the day: " + response.main.temp_max.toFixed(0) + "° F"
+        );
+        $("#low").append(
+          "Low of the day: " + response.main.temp_min.toFixed(0) + "° F"
+        );
       });
-    </script>
-  </head>
-  <body class="d-flex flex-column">
-    <style>
-      body {
-        background: url(assets/image/dan-gold-1232227-unsplash1.png);
-        background-size: 100%;
-        background-repeat: repeat;
-        width: 100%;
-      }
-    </style>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle"
-            data-toggle="collapse"
-            data-target="#myNavbar"
-          >
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">MySnapShot</a>
-          <span
-            style="font-size: 2.3em; color: rgb(255, 255, 255); margin-right: 10px;"
-          >
-            <i class="fas fa-globe fa-1x"></i>
-          </span>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li>
-              <a href="preferences.html" id="preferencesId">Preferences</a>
-            </li>
-            <li><a href="login.html" id="loginId">Sign In</a></li>
-            <li><a id="signOutButton" id="signOutButton">Sign Out</a></li>
-          </ul>
+    }
 
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="#"
-                ><span class="glyphicon glyphicon-user"></span> My Account</a
-              >
-            </li>
-          </ul>
+    $.ajax({
+      method: "GET",
+      url: "https://geoip-db.com/jsonp/",
+      dataType: "jsonp"
+    });
+  </script>
+</head>
+
+<body class="d-flex flex-column">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html" style="font-size: 25px">MySnapShot</a>
+        <span style="font-size: 2.5em; color: rgb(255, 255, 255); margin-right: 10px;">
+          <i class="fas fa-globe fa-1x"></i>
+        </span>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active">
+            <a href="index.html">Home</a>
+          </li>
+          <li>
+            <a href="login.html">Sign In</a>
+          </li>
+          <li>
+          <li><a id="signOutButton">Sign Out</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="well">
+          <h1>NEWS</h1>
+          <hr />
+          <div class="news"></div>
         </div>
       </div>
-    </nav>
+      <div class="col-sm-6">
+        <div class="well">
+          <div id="weather">
+            <p id="city"></p>
+            <p id="weatherDescription"></p>
 
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="well">
-            <h1>NEWS</h1>
-            <hr />
-            <div class="news"></div>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="well">
-            <div id="weather">
-              <p id="city"></p>
-              <p id="weatherDescription"></p>
-
-              <p id="windSpeed"></p>
-              <p id="humidity"></p>
-              <p id="currentTemp"></p>
-              <p id="high"></p>
-              <p id="low"></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="well">
-            <h1>STOCK</h1>
-            <hr />
-            <div class="stock">
-              <div class="current">
-                <div class="info">
-                  <div>&nbsp;</div>
-                  <div class="symbol"></div>
-                  <div class="price">&deg;</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6" id="todoApp">
-          <div class="well">
-            <div id="todoContainer">
-              <h1 id="todoTitle">To-Do List <i class="fas fa-plus"></i></h1>
-              <input type="text" placeholder="Add New to-do" id="todoInput" />
-              <ul id="todoUl"></ul>
-            </div>
+            <p id="windSpeed"></p>
+            <p id="humidity"></p>
+            <p id="currentTemp"></p>
+            <p id="high"></p>
+            <p id="low"></p>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <footer class="container-fluid text-center">
-      <p>CopyRights 2019</p>
-    </footer> -->
-
-    <!-- Footer -->
-    <footer class="page-footer font-small blue">
-      <!-- Copyright -->
-      <div class="footer-copyright text-center py-3">
-        © 2019 Copyright:
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="well">
+          <h1>STOCK</h1>
+          <hr />
+          <div class="stock">
+            <div class="current">
+              <div class="info">
+                <div>&nbsp;</div>
+                <div class="symbol"></div>
+                <div class="price">&deg;</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- Copyright -->
-    </footer>
-    <!-- Footer -->
 
-    <script src="assets/js/main.js"></script>
-  </body>
+      <div class="col-sm-6" id="todoApp">
+        <div class="well">
+          <div id="todoContainer">
+            <h1 id="todoTitle">To-Do List <i class="fas fa-plus"></i></h1>
+            <input type="text" placeholder="Add New to-do" id="todoInput" />
+            <ul id="todoUl"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!------------------------- FOOTER ------------------------------------->
+
+   <footer class="page-footer font-small blue">
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">
+      © 2019 Copyright:
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
+  <script src="assets/js/main.js"></script>
+</body>
+
 </html>
