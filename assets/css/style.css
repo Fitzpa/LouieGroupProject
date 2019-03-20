@@ -8,7 +8,7 @@ body {
 
 .well {
     background-color: rgb(52, 52, 52);
-    /*opacity: .9;*/
+    opacity: 1.0;
 }
 
 p {
@@ -36,7 +36,7 @@ footer {
 }
 
 .newsPreference:hover {
-    font-size: 1.2em;
+    font-size: 1.4em;
     transition: 0.2s ease-in;
 }
 
@@ -145,35 +145,24 @@ h2 {
     height: 120px;
     width: auto;
 }
-/*-------- preferences--------*/
-#zip-input {
-    width: 100%;
-    color: #000000
-}
+/*-------- preferences--------*/  
 
-#addZipButton{
-    color: black;
-    border-radius: 4px;
-    width: 70px;
-    box-shadow: 5px 10px rgb(0, 0, 0);
 
-    
-
-}
 #addNewsButton{
     color: black;
     border-radius: 4px;
-    width: 70px;
+    width: 90px;
     box-shadow: 5px 10px rgb(0, 0, 0);
     
     
+    
 }
-.col-sm-4{
+.col-sm-11{
     float: none;
     margin: 0 auto;
     
 }
-.col-sm-9{
+.col-md-9{
     float: none;
     margin: 0 auto;
 }
@@ -195,19 +184,19 @@ font-size: 22px
     color: white;
     color: #000000;
 }
-/*
-body{
-background-image:url('https://media.giphy.com/media/3oKIPaGG4PDQgQDFZe/giphy.gif');
-background-size:100%;
-background-repeat: repeat-y;
-background-attachment: fixed;
-height:100%;
-width:100%;
-}
-
-*/
 body{
 background: #4ECDC4;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #556270, #4ECDC4);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #556270, #4ECDC4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.newsPreference{
+    border-radius: 6px;
+    width: 100px;
+    height: auto;
+    
+
+}
+#addNewsButton:hover {
+    background-color: #4ECDC4;
+   
 }
