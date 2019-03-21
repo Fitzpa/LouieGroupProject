@@ -1,3 +1,8 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
 * {
     font-family: 'Roboto', sans-serif;
     
@@ -25,6 +30,8 @@ footer {
     text-align: center;
     width: 100%;
     left: 0;
+ 
+
 }
 
 .form-check-lable {
@@ -153,6 +160,7 @@ h2 {
     border-radius: 4px;
     width: 90px;
     box-shadow: 5px 10px rgb(0, 0, 0);
+    background-color: white;
     
     
     
@@ -193,10 +201,16 @@ background: linear-gradient(to right, #556270, #4ECDC4); /* W3C, IE 10+/ Edge, F
     border-radius: 6px;
     width: 100px;
     height: auto;
+    background-color: white;
     
 
 }
 #addNewsButton:hover {
     background-color: #4ECDC4;
    
+}
+.login-footer{
+    bottom: 0;
+    width: 100%;
+    position: absolute
 }
