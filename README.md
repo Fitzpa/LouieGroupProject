@@ -1,4 +1,9 @@
 # BC-Project-1
+
+# Link to deployed page
+https://fitzpa.github.io/LouieGroupProject/
+
+
 MySnapshot - App to display most interesting information for individuals based on preferences 
 Project Title: MySnapShot
 Goal of app: User selects preferences of what they want to see on a daily basis:
